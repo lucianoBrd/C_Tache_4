@@ -24,6 +24,8 @@ Dans la [Tache3](https://github.com/lucianoBrd/C_Tache_3), nous avons géré :
    entre le client et le serveur respecte le format JSON et le protocole de
    communication.
 Dans la [Tache4](https://github.com/lucianoBrd/C_Tache_4), nous avons géré :
+  * Nous avons implémenté les fonctionnalités suivantes sur la partie calcule 
+  serveur : moyenne, minimum, maximum et ecart_type.
 
 ## Fichiers: Noms de fichiers
 
@@ -100,8 +102,8 @@ Dans ce projet, nous utilisons plusieurs bibliothèques standards :
 
 ##  Difficulté: niveau de difficulté (facile, moyenne, difficile)
 
-Durant cette tache, il a fallu penser aux nombreux cas possibles qui font 
-qu'un message JSON n'est pas valide. Mais après cela il suffit de mettre 
-en oeuvre des vérifications. Le niveau de difficulté fut moyen.
+La difficulté fut plutot moyenne. En somme, le plus délicat fut de 
+revoir l'architecture de notre code afin de rendre le nombre de valeurs
+du calcule dynamique.
 
 ## Commentaires (optionnels): remarques etc.

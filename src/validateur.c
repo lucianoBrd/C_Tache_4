@@ -59,11 +59,15 @@ int validateur_content_message_json(
       
     }
     if(json->nb_valeurs > 2){
-      if(atof(json->valeurs[1]) == 0.0 || atof(json->valeurs[2]) == 0.0){
-	delete_message_json(json);
-	return -1;
+      int i = 1;
+      for(i; i < json->nb_valeurs; i++){
+	if(atof(json->valeurs[1]) == 0.0){
+	  delete_message_json(json);
+	  return -1;
+	  
+	}
 	
-      }
+      } /* For each number */
       if(validateur_calcule_content_message_json(message) == -1){
 	  delete_message_json(json);
 	  return -1;
