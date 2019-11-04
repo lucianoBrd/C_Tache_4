@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <math.h>
 
 #include "serveur.h"
 
@@ -164,7 +165,8 @@ int recois_numero_calcule(
   int 	       client_socket_fd,
   message_json *json
 ){
-  int 	        data_size;
+  int 	        data_size,
+		i 	      = 1;
   char 	        *operation    = json->valeurs[0],
                 save[DATA_SIZE];
   float         result        = 0.0,
@@ -188,6 +190,48 @@ int recois_numero_calcule(
     /* Case / */
     result = number1 / number2;
 
+  } else if(strcmp(operation, "moyenne") == 0.0){
+    /* Case moyenne */
+    for(i; i < json->nb_valeurs; i++){
+      result += atof(json->valeurs[i]);
+      
+    } /* For each number */
+    result = result / (json->nb_valeurs - 1);
+
+  } else if(strcmp(operation, "minimum") == 0.0){
+    /* Case minimum */
+    result = atof(json->valeurs[1]);
+    for(i; i < json->nb_valeurs; i++){
+      if(result > atof(json->valeurs[i]))
+	result = atof(json->valeurs[i]);
+      
+    } /* For each number */
+
+  } else if(strcmp(operation, "maximum") == 0.0){
+    /* Case maximum */
+    result = atof(json->valeurs[1]);
+    for(i; i < json->nb_valeurs; i++){
+      if(result < atof(json->valeurs[i]))
+	result = atof(json->valeurs[i]);
+      
+    } /* For each number */
+
+  } else if(strcmp(operation, "ecart_type") == 0.0){
+     /* Case moyenne */
+     float moy = 0.0;
+    for(i; i < json->nb_valeurs; i++){
+      moy += atof(json->valeurs[i]);
+      
+    } /* For each number */
+    moy = moy / (json->nb_valeurs - 1);
+    
+    for(i = 1; i < json->nb_valeurs; i++){
+      result += pow(atof(json->valeurs[i]) - moy, 2);
+      
+    } /* For each number */
+    
+    result = sqrt(result / (json->nb_valeurs - 1));
+
   } else {
     /* Case error */
     result = -1.0;
@@ -198,8 +242,10 @@ int recois_numero_calcule(
   json_save = new_message_json(1);
   strcpy(json_save->code, "calcule");
 
-  if (  strstr(json->valeurs[1], ".") != NULL ||
-        strstr(json->valeurs[2], ".") != NULL ){
+  if (  strstr(json->valeurs[1], ".") 	!= NULL ||
+        strstr(json->valeurs[2], ".") 	!= NULL ||
+	strcmp(operation, "moyenne")  	== 0.0  ||
+	strcmp(operation, "ecart_type") == 0.0  ){
     /* Number float */
     printf("Le resultat du %s vaut %.2f\n", json->code, result);
     sprintf(json_save->valeurs[0], "%.2f", result);

@@ -53,20 +53,22 @@ int validateur_content_message_json(
   } /* Message or name case */
   
   if(strcmp(json->code, "calcule") == 0){
-    if(json->nb_valeurs != 3){
+    if(json->nb_valeurs < 1){
       delete_message_json(json);
       return -1;
       
     }
-    if(atof(json->valeurs[1]) == 0.0 || atof(json->valeurs[2]) == 0.0){
-      delete_message_json(json);
-      return -1;
-      
-    }
-    if(validateur_calcule_content_message_json(message) == -1){
-        delete_message_json(json);
-        return -1;
-      
+    if(json->nb_valeurs > 2){
+      if(atof(json->valeurs[1]) == 0.0 || atof(json->valeurs[2]) == 0.0){
+	delete_message_json(json);
+	return -1;
+	
+      }
+      if(validateur_calcule_content_message_json(message) == -1){
+	  delete_message_json(json);
+	  return -1;
+	
+      }
     }
     
   } /* Calcule case */

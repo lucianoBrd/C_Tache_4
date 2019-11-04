@@ -69,28 +69,40 @@ int envoie_recois_message(
 
   } else {
     /* Compute case */
+    char 	number_c[VALEURS_SIZE];
+    int 	n = 0,
+		i = 1;
+    /* Ask the number of values */
+    printf("Nombre de valeurs de votre %s (max %d caracteres): ", type, VALEURS_SIZE);
+    fgets(number_c, VALEURS_SIZE, stdin);
+
+    n = atoi(number_c);
+    
+    if(n == 0){
+      printf("Nombre de valeurs incorrect.\n");
+      return 0;
+      
+    } /* Error case */
+    
     /* Create object */
-    message_json *json = new_message_json(3);
+    message_json *json = new_message_json(n + 1);
     /* Set the code of the message */
     strcpy(json->code, type);
-
+    
     /* Ask the value of the operator of the message */
     printf("Votre opérateur du %s (max %d caracteres): ", type, VALEURS_SIZE);
     fgets(json->valeurs[0], VALEURS_SIZE, stdin);
     /* Remove the return line */
     json->valeurs[0][strcspn(json->valeurs[0], "\n")] = 0;
-
-    /* Ask the value of the first number of the message */
-    printf("Votre premier nombre du %s (max %d caracteres): ", type, VALEURS_SIZE);
-    fgets(json->valeurs[1], VALEURS_SIZE, stdin);
-    /* Remove the return line */
-    json->valeurs[1][strcspn(json->valeurs[1], "\n")] = 0;
-
-    /* Ask the value of the second number of the message */
-    printf("Votre second nombre du %s (max %d caracteres): ", type, VALEURS_SIZE);
-    fgets(json->valeurs[2], VALEURS_SIZE, stdin);
-    /* Remove the return line */
-    json->valeurs[2][strcspn(json->valeurs[2], "\n")] = 0;
+    
+    for(i; i <= n; i++){
+      /* Ask the value of the n number of the message */
+      printf("Votre %d nombre du %s (max %d caracteres): ", i, type, VALEURS_SIZE);
+      fgets(json->valeurs[i], VALEURS_SIZE, stdin);
+      /* Remove the return line */
+      json->valeurs[i][strcspn(json->valeurs[i], "\n")] = 0;
+    
+    } /* Foreach valeurs */
 
     /* Create the string and delete the object */
     create_message_json(data, json);

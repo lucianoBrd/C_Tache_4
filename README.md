@@ -1,4 +1,4 @@
-# Rapport d’auto-évaluation tache 3
+# Rapport d’auto-évaluation tache 4
 
 Lien du git : [Projet](https://github.com/lucianoBrd/C_Tache_3)
 
@@ -21,8 +21,9 @@ Dans la [Tache2](https://github.com/lucianoBrd/C_Tache_2), nous avons géré :
 
 Dans la [Tache3](https://github.com/lucianoBrd/C_Tache_3), nous avons géré :
   * Assurer que le transfert des messages
-    entre le client et le serveur respecte le format JSON et le protocole de
-    communication.
+   entre le client et le serveur respecte le format JSON et le protocole de
+   communication.
+Dans la [Tache4](https://github.com/lucianoBrd/C_Tache_4), nous avons géré :
 
 ## Fichiers: Noms de fichiers
 
@@ -86,6 +87,7 @@ save.txt
 
 Dans ce projet, nous utilisons plusieurs bibliothèques standards :
   * string.h
+  * math.h
   * stdio.h
   * stdlib.h
   * unistd.h
