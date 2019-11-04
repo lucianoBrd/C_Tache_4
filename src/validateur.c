@@ -30,7 +30,7 @@ int validateur_content_message_json(
   json = create_object_json(message);
   
   if(	strcmp(json->code, "message")  	!= 0 &&
-    	strcmp(json->code, "nom") 	    != 0 &&
+    	strcmp(json->code, "nom") 	!= 0 &&
     	strcmp(json->code, "calcule")  	!= 0 &&
     	strcmp(json->code, "couleurs") 	!= 0 ){
     delete_message_json(json);
@@ -74,20 +74,22 @@ int validateur_content_message_json(
   } /* Calcule case */
   
   if(strcmp(json->code, "couleurs") == 0){
-    if(json->nb_valeurs < 2){
+    if(json->nb_valeurs < 1){
       delete_message_json(json);
       return -1;
       
     }
-    if(atof(json->valeurs[0]) == 0.0){
-      delete_message_json(json);
-      return -1;
-      
-    }
-    if(validateur_couleurs_content_message_json(message) == -1){
-        delete_message_json(json);
-        return -1;
-      
+    if(json->nb_valeurs > 2){
+      if(atof(json->valeurs[0]) == 0.0){
+	delete_message_json(json);
+	return -1;
+	
+      }
+      if(validateur_couleurs_content_message_json(message) == -1){
+	  delete_message_json(json);
+	  return -1;
+	
+      }
     }
     
   } /* Couleurs case */
@@ -556,37 +558,20 @@ int validateur_calcule_content_message_json(
     while(message[i] != '\0'){
         if(message[i] == ','){
             i++;
-            break;
+            while(message[i] != '\0'){
+                if(message[i] != ' ' && message[i] != '\n' && message[i] != '\r'){
+                    if(message[i] == '"')
+                        return -1;
+                    else 
+                        break;
+                    
+                }
+                i++;
+            }
             
         }
         i++;
     }
-    while(message[i] != '\0'){
-        if(message[i] != ' ' && message[i] != '\n' && message[i] != '\r'){
-            break;
-            
-        }
-        i++;
-    }
-    if(message[i] == '"')
-        return -1;
-    while(message[i] != '\0'){
-        if(message[i] == ','){
-            i++;
-            break;
-            
-        }
-        i++;
-    }
-    while(message[i] != '\0'){
-        if(message[i] != ' ' && message[i] != '\n' && message[i] != '\r'){
-            break;
-            
-        }
-        i++;
-    }
-    if(message[i] == '"')
-        return -1;
     
     return 0;
   

@@ -28,7 +28,8 @@ int plot(
   FILE          *p  = popen("gnuplot -persist", "w"),
                 *fp = fopen("save.txt", "a+");
   int           i   = 0,
-                data_size;
+                data_size,
+		n   = json->nb_valeurs - 1;
   char          save[DATA_SIZE],
                 *tmp;
   message_json  *json_save;
@@ -37,15 +38,15 @@ int plot(
   fprintf(p, "set xrange [-15:15]\n");
   fprintf(p, "set yrange [-15:15]\n");
   fprintf(p, "set style fill transparent solid 0.9 noborder\n");
-  fprintf(p, "set title 'Top %d colors'\n", json->nb_valeurs);
+  fprintf(p, "set title 'Top %d colors'\n", n);
   fprintf(p, "plot '-' with circles lc rgbcolor variable\n");
 
-  for(i; i < json->nb_valeurs; i++){
+  for(i; i < n; i++){
       tmp = json->valeurs[i];
       tmp++;
 
       /* Print the color and compute his position (with a cercle of 360°) */
-      fprintf(p, "0 0 10 %lf %lf 0x%s\n", (float)(i)*(float)(360/(float)json->nb_valeurs), (float)(i + 1)*(float)(360/(float)json->nb_valeurs), tmp);
+      fprintf(p, "0 0 10 %lf %lf 0x%s\n", (float)(i)*(float)(360/(float)n), (float)(i + 1)*(float)(360/(float)n), tmp);
 
       /* Put the color into the file */
       fputs(json->valeurs[i], fp);
@@ -61,7 +62,7 @@ int plot(
   json_save = new_message_json(1);
 
   strcpy(json_save->code, "couleurs");
-  strcpy(json_save->valeurs[0], "Couleurs enregistrées");
+  strcpy(json_save->valeurs[0], "Couleurs_enregistrées");
 
   create_message_json(save, json_save);
   delete_message_json(json_save);
@@ -169,26 +170,39 @@ int recois_numero_calcule(
 		i 	      = 1;
   char 	        *operation    = json->valeurs[0],
                 save[DATA_SIZE];
-  float         result        = 0.0,
-                number1       = atof(json->valeurs[1]),
-                number2       = atof(json->valeurs[2]);
+  float         result        = 0.0;
   message_json  *json_save;
 
   if(strcmp(operation, "+") == 0.0){
     /* Case + */
-    result = number1 + number2;
+    for(i; i < json->nb_valeurs; i++){
+      result += atof(json->valeurs[i]);
+      
+    } /* For each number */
 
   } else if(strcmp(operation, "-") == 0.0){
     /* Case - */
-    result = number1 - number2;
+    result = atof(json->valeurs[1]);
+    for(i = 2; i < json->nb_valeurs; i++){
+      result -= atof(json->valeurs[i]);
+      
+    } /* For each number */
 
   } else if(strcmp(operation, "*") == 0.0){
     /* Case * */
-    result = number1 * number2;
+    result = 1;
+    for(i; i < json->nb_valeurs; i++){
+      result *= atof(json->valeurs[i]);
+      
+    } /* For each number */
 
   } else if(strcmp(operation, "/") == 0.0){
     /* Case / */
-    result = number1 / number2;
+    result = atof(json->valeurs[1]);
+    for(i = 2; i < json->nb_valeurs; i++){
+      result /= atof(json->valeurs[i]);
+      
+    } /* For each number */
 
   } else if(strcmp(operation, "moyenne") == 0.0){
     /* Case moyenne */
@@ -244,6 +258,7 @@ int recois_numero_calcule(
 
   if (  strstr(json->valeurs[1], ".") 	!= NULL ||
         strstr(json->valeurs[2], ".") 	!= NULL ||
+        strcmp(operation, "/")  	== 0.0  ||
 	strcmp(operation, "moyenne")  	== 0.0  ||
 	strcmp(operation, "ecart_type") == 0.0  ){
     /* Number float */

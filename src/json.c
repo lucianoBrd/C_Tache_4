@@ -29,15 +29,15 @@ void create_message_json(
   strcat(data, "\", \"valeurs\" : [");
   for(i; i < json->nb_valeurs; i++){
     /* Put the value */
-    if(	!(i == 0 && strcmp(json->code, "couleurs") == 0) 		&&
-	!((i == 1 || i == 2) && strcmp(json->code, "calcule") == 0)	){
+    if(	!(i == 0 && strcmp(json->code, "couleurs") == 0) 	&&
+	!((i >= 1) && strcmp(json->code, "calcule") == 0)	){
       strcat(data, "\"");
     } /* String just in that case */
     
     strcat(data, json->valeurs[i]);
     
-    if(	!(i == 0 && strcmp(json->code, "couleurs") == 0) 		&&
-	!((i == 1 || i == 2) && strcmp(json->code, "calcule") == 0)	){
+    if(	!(i == 0 && strcmp(json->code, "couleurs") == 0) 	&&
+	!((i >= 1) && strcmp(json->code, "calcule") == 0)	){
       strcat(data, "\"");
     } /* String just in that case */
 

@@ -182,16 +182,17 @@ void analyse(
   } /* while the user dont put a correct number */
 
   /* New object */
-  json = new_message_json(n);
+  json = new_message_json(n + 1);
+  sprintf(json->valeurs[0], "%d", n);
   strcpy(json->code, "couleurs");
 
   for (count = 1; count < (n + 1) && cc->size - count > 0; count++){
     if(cc->compte_bit ==  BITS32){
-      sprintf(json->valeurs[count - 1], "#%02x%02x%02x", cc->cc.cc24[cc->size-count].c.rouge,cc->cc.cc32[cc->size-count].c.vert,cc->cc.cc32[cc->size-count].c.bleu);
+      sprintf(json->valeurs[count], "#%02x%02x%02x", cc->cc.cc24[cc->size-count].c.rouge,cc->cc.cc32[cc->size-count].c.vert,cc->cc.cc32[cc->size-count].c.bleu);
 
     } /* Bit 32 case */
     if(cc->compte_bit ==  BITS24){
-      sprintf(json->valeurs[count - 1], "#%02x%02x%02x", cc->cc.cc32[cc->size-count].c.rouge,cc->cc.cc32[cc->size-count].c.vert,cc->cc.cc32[cc->size-count].c.bleu);
+      sprintf(json->valeurs[count], "#%02x%02x%02x", cc->cc.cc32[cc->size-count].c.rouge,cc->cc.cc32[cc->size-count].c.vert,cc->cc.cc32[cc->size-count].c.bleu);
 
     } /* Bit 24 case */
 
