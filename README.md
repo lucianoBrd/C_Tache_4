@@ -23,6 +23,7 @@ Dans la [Tache3](https://github.com/lucianoBrd/C_Tache_3), nous avons géré :
   * Assurer que le transfert des messages
    entre le client et le serveur respecte le format JSON et le protocole de
    communication.
+
 Dans la [Tache4](https://github.com/lucianoBrd/C_Tache_4), nous avons géré :
   * Nous avons implémenté les fonctionnalités suivantes sur la partie calcule 
   serveur : moyenne, minimum, maximum et ecart_type.
